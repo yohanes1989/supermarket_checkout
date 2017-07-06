@@ -76,7 +76,7 @@ function Checkout() {
 
   /**
    * Get product from catalog by SKU
-   * @param  {[type]} sku SKU of the product to get
+   * @param  {String} sku SKU of the product to get
    * @return {Object} Specific product
    */
   this.getProduct = (sku) => {
@@ -205,6 +205,7 @@ function Checkout() {
 
   /**
    * Helper function to order bulkPrices by "min" in descending order
+   * @private
    * @param  {Array} bulkPrices
    * @return {Array} Sorted bulkPrices
    */
