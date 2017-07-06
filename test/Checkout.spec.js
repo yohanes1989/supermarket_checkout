@@ -5,7 +5,6 @@ const Checkout = require('../src/Checkout.js');
 
 describe('Checkout', function() {
   it('should exist', function() {
-    const Checkout = require('../src/Checkout.js');
     expect(Checkout).to.not.be.undefined;
   });
 
