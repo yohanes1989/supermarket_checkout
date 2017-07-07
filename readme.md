@@ -1,3 +1,41 @@
+## Get started
+```javascript
+// Array of products. Please follow the same format
+var catalog = [
+  {
+    bulkPrices: [
+      { min: 3, price: 28 }
+    ],
+    price: 10.5,
+    sku: 'a'
+  },
+  {
+    price: 9,
+    sku: 'b'
+  },
+  {
+    bulkPrices: [
+      { min: 2, price: 15 },
+      { min: 5, price: 35 }
+    ],
+    price: 8,
+    sku: 'c'
+  }
+];
+
+// Initialize new Checkout object
+var checkout = new Checkout();
+
+// Tell checkout to use catalog
+checkout.setCatalog(catalog);
+
+// Add item to cart
+checkout.addToCart('a', 1);
+
+// Calculate total
+console.log(checkout.calculateTotal());
+```
+
 <a name="Checkout"></a>
 
 ## Checkout

@@ -88,7 +88,7 @@ function Checkout() {
    * @param {String} sku SKU of product to be added
    * @param {Number} quantity Quantity to be added
    */
-  this.addToCart = (sku, quantity) => {
+  this.addToCart = (sku, quantity = 1) => {
     this.updateProductQuantity(sku, quantity + this.getProductQuantityInCart(sku));
   }
 
