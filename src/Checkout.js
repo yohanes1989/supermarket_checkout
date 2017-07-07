@@ -6,26 +6,26 @@
  * @public
  * @class
  */
-function Checkout() {
-  /**
-   * Set of Product informations and pricings
-   * @private
-   */
-  let catalog = {};
+class Checkout {
+  constructor() {
+    /**
+     * Set of Product informations and pricings
+     */
+    this.catalog = {};
 
-  /**
-   * Shopping cart
-   * @private
-   */
-  let cart = [];
+    /**
+     * Shopping cart
+     */
+    this.cart = [];
+  }
 
   /**
    * Set catalog dictionary (product detail and prices)
    * @param {Array} newCatalog Array of product detail and price
    */
-  this.setCatalog = (newCatalog) => {
+  setCatalog(newCatalog) {
     // Clear catalog
-    catalog = {};
+    this.catalog = {};
 
     newCatalog.forEach(product => this.setProduct(product));
   }
@@ -34,15 +34,15 @@ function Checkout() {
    * Get catalog dictirionary
    * @return {Object} Object of products detail and price keyed by sku
    */
-  this.getCatalog = () => {
-    return catalog;
+  getCatalog() {
+    return this.catalog;
   }
 
   /**
    * Inert product into catalog
    * @param {Object} product product detail and prices
    */
-  this.setProduct = (product) => {
+  setProduct(product) {
     // Check required properties
     if (!product.hasOwnProperty('sku')) {
       throw new Error("SKU is not defined.");
@@ -64,14 +64,14 @@ function Checkout() {
       });
 
       // Order bulkPrices by "min" in descending order for future price calculation
-      product.bulkPrices = orderBulkPrices(product.bulkPrices);
+      product.bulkPrices = this.sortBulkPrices(product.bulkPrices);
     }
 
-    if (!catalog.hasOwnProperty(product.sku)) {
-      catalog[product.sku] = {};
+    if (!this.catalog.hasOwnProperty(product.sku)) {
+      this.catalog[product.sku] = {};
     }
 
-    catalog[product.sku] = product;
+    this.catalog[product.sku] = product;
   }
 
   /**
@@ -79,8 +79,8 @@ function Checkout() {
    * @param  {String} sku SKU of the product to get
    * @return {Object} Specific product
    */
-  this.getProduct = (sku) => {
-    return catalog[sku]?catalog[sku]:null;
+  getProduct(sku) {
+    return this.catalog[sku]?this.catalog[sku]:null;
   };
 
   /**
@@ -88,7 +88,7 @@ function Checkout() {
    * @param {String} sku SKU of product to be added
    * @param {Number} quantity Quantity to be added
    */
-  this.addToCart = (sku, quantity = 1) => {
+  addToCart(sku, quantity = 1) {
     this.updateProductQuantity(sku, quantity + this.getProductQuantityInCart(sku));
   }
 
@@ -97,11 +97,11 @@ function Checkout() {
    * @param {String} sku SKU of product to be updated
    * @param {Number} quantity Quantity to be updated
    */
-  this.updateProductQuantity = (sku, quantity) => {
+  updateProductQuantity(sku, quantity) {
     let inCart = false;
     const updatedCart = [];
 
-    cart.forEach((cartItem) => {
+    this.cart.forEach((cartItem) => {
       if (cartItem.sku === sku) {
         inCart = true;
 
@@ -117,14 +117,14 @@ function Checkout() {
       updatedCart.push({ sku, quantity });
     }
 
-    cart = updatedCart;
+    this.cart = updatedCart;
   }
 
   /**
    * Remove product from cart
    * @param {String} sku SKU of product to be removed
    */
-  this.removeFromCart = (sku) => {
+  removeFromCart(sku) {
     this.updateProductQuantity(sku, 0);
   }
 
@@ -132,8 +132,8 @@ function Checkout() {
    * Get content of the cart
    * @return {Array}
    */
-  this.getCartContent = () => {
-    return cart;
+  getCartContent() {
+    return this.cart;
   }
 
   /**
@@ -141,8 +141,8 @@ function Checkout() {
    * @param {String} sku SKU of product in cart
    * @return {Number}
    */
-  this.getProductQuantityInCart = (sku) => {
-    const productInCart = cart.filter(cartItem => cartItem.sku === sku);
+  getProductQuantityInCart(sku) {
+    const productInCart = this.cart.filter(cartItem => cartItem.sku === sku);
 
     if (productInCart.length > 0) {
       return productInCart[0].quantity;
@@ -154,8 +154,8 @@ function Checkout() {
   /**
    * Clear the cart
    */
-  this.clearCart = () => {
-    cart = [];
+  clearCart() {
+    this.cart = [];
   }
 
   /**
@@ -164,7 +164,7 @@ function Checkout() {
    * @param  {Number} quantity Quantity of product
    * @return {Number} Lineitem total
    */
-  this.calculateLineItem = ({ sku, quantity }) => {
+  calculateLineItem({ sku, quantity }) {
     const product = this.getProduct(sku);
 
     if (product === null) {
@@ -193,10 +193,10 @@ function Checkout() {
    * Calculate total of the cart
    * @return {Number} Total price
    */
-  this.calculateTotal = () => {
+  calculateTotal() {
     let total = 0;
 
-    cart.forEach(cartItem => {
+    this.cart.forEach(cartItem => {
       total += this.calculateLineItem(cartItem);
     });
 
@@ -209,7 +209,7 @@ function Checkout() {
    * @param  {Array} bulkPrices
    * @return {Array} Sorted bulkPrices
    */
-  orderBulkPrices = (bulkPrices) => {
+  sortBulkPrices(bulkPrices) {
     const sortedBulkPrices = bulkPrices.sort((a, b) => b.min - a.min);
 
     return sortedBulkPrices;

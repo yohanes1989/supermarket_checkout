@@ -7,7 +7,9 @@ module.exports = {
   ],
   output: {
     path: __dirname + '/dist',
-    filename: 'Checkout.js'
+    filename: 'Checkout.js',
+    library: 'Checkout',
+    libraryTarget: 'umd'
   },
   module: {
     rules: [
@@ -15,7 +17,7 @@ module.exports = {
         test: /\.jsx?$/,
         include: __dirname + '/src',
         use: [
-          { loader: 'babel-loader', options: { presets: ['es2015'] } }
+          { loader: 'babel-loader', options: { presets: ['es2015'], plugins: ['babel-plugin-add-module-exports'] } }
         ]
       }
     ]
