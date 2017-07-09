@@ -17,7 +17,7 @@ describe('Checkout', function() {
       sku: 'a'
     },
     {
-      price: 9,
+      price: '9',
       sku: 'b'
     },
     {

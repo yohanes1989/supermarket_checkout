@@ -172,13 +172,13 @@ class Checkout {
     }
 
     let total = 0;
-    let singlePrice = product.price;
+    let singlePrice = parseFloat(product.price);
     let remainingQuantity = quantity;
 
     if (product.hasOwnProperty('bulkPrices')) {
       product.bulkPrices.forEach(({ min, price }) => {
         while (remainingQuantity >= min) {
-          total += price;
+          total += parseFloat(price);
           remainingQuantity -= min;
         }
       });
